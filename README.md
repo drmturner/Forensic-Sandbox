@@ -1,5 +1,5 @@
 # Auto-configure Windows Sandbox for Forensic Analysis
-Auto-configuration for a custom instance of Windows Sandbox. Auto-launches after removable media storage detection. 
+Auto-configuration for a custom instance of Windows Sandbox. Auto-launches after removable media storage detection. This is an independent project not associated with any organization. Any similarity is coincidental or unavoidable due to the nature of script commands. 
 
 **Overview**
 
@@ -17,32 +17,28 @@ This repository contains scripts and related resources to automate the initial s
    - Execute this script as an administrator to configure the system for optical media dependencies and task automation.
 
 2. Sandbox Files:
-   - Optical Media Watcher.xml
-     - Description: This is an XML file that defines a Task Scheduler task. It monitors for optical media data mounting.
+   - OpticalMedialogger.xml
+     - Description: This is an XML file that defines a Task Scheduler task. It monitors for optical media data mounting and launches the opticalwritelog.ps1 files.
      - Purpose: To automate logging when optical drives are initialized and media are loaded. Launches at user login. 
-   - opticalwatcher.ps1
+   - opticalwritelog.ps1
      - Description: A PowerShell script that handles operations related to logging optical media.
      - Purpose: Writes to the event log when optical media is loaded to Event ID 2001. Runs continuously in the background.
-   - Update and Launch Sandbox on USB Insertion.xml
-     - Description: An XML file designed for Task Scheduler that updates and launches the Windows Sandbox feature upon optical media or USB media insertion.
-     - Purpose: Automates the process of starting a secure sandbox environment whenever a USB device is connected, enhancing system security.
-   - updatelogwritelocation.ps1
+   - Start Sandbox.xml
+     - Description: An XML file designed for Task Scheduler that launches sandboxconfig.ps1 when event code 2001 (new optical storage media) or 2003 (new USB storage media).
+     - Purpose: Automates the process of starting a secure sandbox environment whenever a USB device or optical media is loaded.
+   - sandboxconfig.ps1
      - Description: A PowerShell script to launch and configure a custom Sandbox environment.
-     - Purpose: Displays GUI to the user as it runs through detection and configuration of the Windows Sandbox based upon the media loaded and/or selected.
+     - Purpose: Displays GUI to the user as it runs through detection and configuration of the Windows Sandbox based upon the media loaded and/or selected. Requires no user interaction unless multiple drives are detected. Ignores the System Root Drive
 
 ## Additional Features
-Debug Logging: Both scripts provide detailed logging to a file (OpticalMediaSetup.log) located in the system’s temporary directory (%Temp%). Logs include timestamps for all operations and error messages for troubleshooting.
+Debug Logging: Both scripts provide detailed logging to a file (DependencySetup.log and SandboxErrors-[timestamp].log) located in the Sandbox directory. Logs include timestamps for all operations and error messages for troubleshooting.
 
 ## Use Cases
 
 ### Current Use Cases
-- Automating the initial setup of systems to enable Windows Sandbox.
-- Streamlining the configuration of custom event logging and task scheduling.
 - Forensics for Police
-
-### Potential Use Cases
 - Anything that requires JIT admin access in an isolated environment
-- Malware Forensics
+- Malware Forensics for security teams
 
 
 ## Installation
